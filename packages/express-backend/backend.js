@@ -43,8 +43,9 @@ const findUserByName = (name) => {
 const findUserById = (id) =>
     users['users_list']
         .find( (user) => user['id'] === id);
-
+//added ID gen for new users - still needs to refresh to display tho
 const addUser = (user) => {
+    
     users['users_list'].push(user);
     return user;
 }
@@ -96,9 +97,10 @@ app.get('/users/:id', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-    const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    let userToAdd = req.body;
+    userToAdd.id = Math.floor(Math.random() * 1000);
+    
+    res.status(201).send(addUser(userToAdd));
 });
 
 
