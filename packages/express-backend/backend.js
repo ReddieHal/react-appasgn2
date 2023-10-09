@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+
 
 const app = express();
 const port = 8000;
@@ -54,6 +56,8 @@ const delUser = (id) => {
 const findUserByNameJob = (name, job) => { 
 	return users['users_list'].filter( (user) => user['job'] === job && user['name'] === name);
 }
+
+app.use(cors());
 
 app.use(express.json());
 
