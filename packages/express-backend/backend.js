@@ -51,11 +51,14 @@ const addUser = (user) => {
 }
 
 const delUser = (id) => {
-	users['users_list'].filter((user) => user[id] != id);
+    
+	var user = users['users_list'].find( (user) => user['id'] === id);
+    var indx = users['users_list'].indexOf(user)
+    users['users_list'].splice(indx, 1);
 }
 
 const findUserByNameJob = (name, job) => { 
-	return users['users_list'].filter( (user) => user['job'] === job && user['name'] === name);
+	return users['users_list'].find( (user) => user['job'] === job && user['name'] === name);
 }
 
 app.use(cors());
@@ -98,21 +101,21 @@ app.get('/users/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
     let userToAdd = req.body;
-    userToAdd.id = Math.floor(Math.random() * 1000);
-    
+    userToAdd.id = '' + (Math.floor(Math.random() * 1000));
+    //userToAdd.id = "100"
     res.status(201).send(addUser(userToAdd));
 });
 
 
 //uses find by ID to check user exists then runs delete by filtering NOT that specific ID
-app.delete('/users/:id', (req, res) => {
-    const id = req.params['id']; //or req.params.id
+app.delete('/users', (req, res) => {
+    const id = req.query.id; //or req.params.id
     let result = findUserById(id);
     if (result === undefined) {
         res.status(404).send('Resource not found.');
     } else {
-	
-        res.send(delUser(id));
+        delUser(id)
+        res.status(204).send();
     }
 });
 

@@ -12,6 +12,19 @@ function MyApp() {
       return i !== index
     });
     setCharacters(updated);
+    
+    
+    const promise = fetch("Http://localhost:8000/users?id=" + characters[index].id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+    });
+
+    
+
+    return promise;
   }
 
   function updateList(person) { 
